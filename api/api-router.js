@@ -46,30 +46,28 @@ router.get('/jokes', (req, res) => {
     })
 })
 
-router.use(restricted);
-
-router.post('/restricted/jokes', (req,res) => {
+router.post('/restricted/jokes', restricted, (req,res) => {
     const body = req.body;
     db.insertJoke(body).then(joke=> {
         res.status(201).json({message:'added joke with the following data!', joke: body})
     }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
 });
 
-router.get('/restricted/jokes/:id', (req,res) => {
+router.get('/restricted/jokes/:id', restricted, (req,res) => {
     const id = req.params.id;
     db.getUserJokes(id).then(jokes => {
         res.status(200).json(jokes);
     })
 });
 
-router.post('/restricted/saved', (req, res)=> {
+router.post('/restricted/saved', restricted, (req, res)=> {
     const body = req.body;
     db.insertSaved(body).then(saved => {
         res.status(201).json({message: 'the joke has been saved!', saved})
     }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
 })
 
-router.get('/restricted/saved/:id', (req, res) => {
+router.get('/restricted/saved/:id', restricted, (req, res) => {
     const id = req.params.id;
     console.log(id);
     db.getSaved(id).then(saves => {
@@ -77,14 +75,14 @@ router.get('/restricted/saved/:id', (req, res) => {
     }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
 })
 
-router.delete('/restricted/jokes/:id', (req,res) => {
+router.delete('/restricted/jokes/:id', restricted, (req,res) => {
     const id = req.params.id;
     db.remove(id).then( del => {
         res.status(200).json({message: 'joke has been deleted', del})
     }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
 })
 
-router.put('/restricted/jokes/:id', (req,res) => {
+router.put('/restricted/jokes/:id', restricted, (req,res) => {
     const id = req.params.id;
     const body = req.body;
     db.update(id, body).then(joke => {
