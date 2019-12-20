@@ -23,7 +23,7 @@ module.exports = {
     connection: dbConnection,
     useNullAsDefault: true,
     migrations: {
-      directory:'./migrations'
+      directory: __dirname + '/migrations'
     },
     seeds: {
       directory: __dirname + '/database/seeds'
