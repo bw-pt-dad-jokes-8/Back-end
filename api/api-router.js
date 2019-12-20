@@ -21,9 +21,9 @@ router.post('/register', (req,res)=> {
     const body = req.body;
     const hash = bcrypt.hashSync(body.password, 12);
     body.password = hash;
-    console.log(body)
+    const token = genToken(body);
     db.insertUser(body).then(user =>  {
-        res.status(201).json({message: 'user created!'})
+        res.status(201).json({message: 'user created!', token})
     }).catch(err => res.status(500).json({error: err, message: 'internal server error'}))
 });
 
@@ -52,7 +52,7 @@ router.post('/restricted/jokes', (req,res) => {
     const body = req.body;
     db.insertJoke(body).then(joke=> {
         res.status(201).json({message:'added joke with the following data!', joke: body})
-    })
+    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
 });
 
 router.get('/restricted/jokes/:id', (req,res) => {
@@ -62,14 +62,34 @@ router.get('/restricted/jokes/:id', (req,res) => {
     })
 });
 
-router.post('/api/restricted/saved', (req, res)=> {
+router.post('/restricted/saved', (req, res)=> {
     const body = req.body;
     db.insertSaved(body).then(saved => {
         res.status(201).json({message: 'the joke has been saved!', saved})
-    })
+    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
 })
 
+router.get('/restricted/saved/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    db.getSaved(id).then(saves => {
+        res.status(200).json(saves);
+    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
+})
 
+router.delete('/restricted/jokes/:id', (req,res) => {
+    const id = req.params.id;
+    db.remove(id).then( del => {
+        res.status(200).json({message: 'joke has been deleted', del})
+    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
+})
 
+router.put('/restricted/jokes/:id', (req,res) => {
+    const id = req.params.id;
+    const body = req.body;
+    db.update(id, body).then(joke => {
+        res.status(200).json({message: 'the joke has been updated'})
+    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
+})
 
 module.exports = router;

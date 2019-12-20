@@ -1,11 +1,32 @@
-// Update with your config settings.
+const dbConnection = process.env.DATABASE_URL;
+require('dotenv').config();
 
 module.exports = {
   development: {
     client: 'sqlite3',
-    connection: {
-      filename: './database.db3'
+    useNullAsDefault: true,
+    connection: { filename: './database/dad-jokes.db3'},
+    migrations: {
+      directory: './migrations/'
+    },
+    seeds: {
+      directory: './database/seeds/'
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run('PRAGMA foreign_keys=ON', done);
+      }
     }
   },
-
+  production: {
+    client: 'pg',
+    connection: dbConnection,
+    useNullAsDefault: true,
+    migrations: {
+      directory: __dirname + '/database/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/database/seeds'
+    }
+  }
 };

@@ -44,8 +44,8 @@ function insertUser(body){
     return db('users').insert(body).then(id => getJokeById(id[0]))
 }
 
-function remove(){
-    return db('jokes').where('id', id).del();
+function remove(id){
+    return db('jokes').where({id}).del();
 }
 
 function update(id, changes){

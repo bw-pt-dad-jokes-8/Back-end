@@ -17,7 +17,8 @@ Route for Private jokes:
 GET /api/restricted/jokes/:id
 
 Route for Saved Jokes:
-GET /api/restricted/saved
+GET /api/restricted/saved/:id
+pass in the user id
 
 POST /api/restricted/saved
 must pass in user_id, posted_user_id, and joke_id
