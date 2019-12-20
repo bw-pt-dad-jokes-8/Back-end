@@ -23,10 +23,10 @@ module.exports = {
     connection: dbConnection,
     useNullAsDefault: true,
     migrations: {
-      directory: __dirname + '/migrations'
+      directory: '/database/migrations'
     },
     seeds: {
-      directory: __dirname + '/database/seeds'
+      directory: '/database/seeds'
     }
   }
 };
