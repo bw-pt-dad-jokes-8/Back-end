@@ -14,6 +14,7 @@ exports.up = function(knex) {
     joke.string('status').notNullable();
   })
   .createTable('saved', saves => {
+      saves.increments();
       saves.integer('user_id').unsigned().notNullable().unique().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
       saves.integer('posted_user_id').unsigned().notNullable().unique().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
       saves.integer('joke_id').unsigned().notNullable().unique().references('id').inTable('jokes').onDelete('CASCADE').onUpdate('CASCADE');
@@ -21,5 +22,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  knex.schema.dropTableIfExists('saved').dropTableIfExists('jokes').dropTableIfExists('saved')
+  return knex.schema.dropTableIfExists('saved').dropTableIfExists('jokes').dropTableIfExists('users')
 };
