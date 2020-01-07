@@ -1,5 +1,7 @@
 const dbConnection = process.env.DATABASE_URL;
 require('dotenv').config();
+const pg = require('pg');
+pg.defaults.ssl = true;
 
 module.exports = {
   development: {
@@ -23,10 +25,10 @@ module.exports = {
     connection: dbConnection,
     useNullAsDefault: true,
     migrations: {
-      directory:'./migrations'
+      directory: './database/migrations'
     },
     seeds: {
-      directory: __dirname + '/database/seeds'
+      directory: './database/seeds'
     }
   }
 };
