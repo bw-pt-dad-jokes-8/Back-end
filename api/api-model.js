@@ -1,6 +1,8 @@
 const db = require('../database/dbConfig');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
+    genToken,
     getUser,
     getJokes,
     getJokeById,
@@ -12,6 +14,19 @@ module.exports = {
     remove,
     update
 }
+
+function genToken(user){
+    const payload = {
+        subject: user.id,
+        username: user.username
+    }
+    const secret = process.env.SECRET || 'secret';
+    const options = {
+        expiresIn: '2d'
+    }
+    return jwt.sign(payload, secret, options)
+}
+
 function getUser(filter){
     return db('users').where(filter).first();
 }
@@ -29,7 +44,7 @@ function getSaved(id){
 }
 
 function insertSaved(body){
-    return db('saved').insert(body).then(id=> getSaved(id[0]))
+    return db('saved').insert(body)
 }
 
 function getUserJokes(id) {
@@ -37,11 +52,11 @@ function getUserJokes(id) {
 }
 
 function insertJoke(body){
-    return db('jokes').insert(body).then(id => getJokeById(id[0]))
+    return db('jokes').insert(body);
 }
 
 function insertUser(body){
-    return db('users').insert(body).then(id => getJokeById(id[0]))
+    return db('users').insert(body)
 }
 
 function remove(id){
