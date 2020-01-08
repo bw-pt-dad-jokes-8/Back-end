@@ -9,7 +9,6 @@ router.post('/register', (req,res)=> {
     const hash = bcrypt.hashSync(body.password, 12);
     body.password = hash;
     const token = db.genToken(body);
-    console.log(body);
     db.insertUser(body).then(user =>  {
         res.status(201).json({message: 'user created!', token})
     })
@@ -58,7 +57,6 @@ router.post('/restricted/saved', restricted, (req, res)=> {
 
 router.get('/restricted/saved/:id', restricted, (req, res) => {
     const id = req.params.id;
-    console.log(id);
     db.getSaved(id).then(saves => {
         res.status(200).json(saves);
     }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))

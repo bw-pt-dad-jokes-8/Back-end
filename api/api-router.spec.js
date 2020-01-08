@@ -9,12 +9,15 @@ beforeEach(async()=> {
     await db('jokes').truncate();
     await db('saved').truncate();
 })
+afterAll(async()=>{
+    await db.destroy();
+})
 describe('POST /api/register',()=> {
     it('should return message w/ token', async()=> {
         const body = {username: 'anon1', password: 'example', email: 'ex@ex.com'}
         const hash = bcrypt.hashSync(body.password, 12);
         body.password = hash;
-        const res = await request(server).post('/api/register').send(body)
+        const res = await request(server).post('/api/register').send(body);
         expect(res.body).toEqual({"message": "user created!", token: res.body.token})
     })
 })
@@ -98,7 +101,7 @@ describe('GET /api/restricted/saved/jokes',()=> {
         const saved = {user_id: 1, posted_user_id: 2, joke_id: 1}
         await request(server).post('/api/restricted/saved').send(saved).set('token', newToken)
         const res = await request(server).get('/api/restricted/saved/1').set('token', newToken)
-        expect(res.body).toEqual({id: 1, user_id: 1, posted_user_id: 2, joke_id: 1})
+        expect(res.body).toEqual([{id: 1, user_id: 1, posted_user_id: 2, joke_id: 1}])
     })
 })
 describe('DELETE /api/restricted/jokes/:id',()=> {
