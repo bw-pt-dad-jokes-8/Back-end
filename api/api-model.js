@@ -14,7 +14,6 @@ module.exports = {
     remove,
     update
 }
-
 function genToken(user){
     const payload = {
         subject: user.id,
@@ -40,7 +39,7 @@ function getJokeById(id){
 }
 
 function getSaved(id){
-    return db('saved').where({id}).first();
+    return db('saved').where('user_id', id);
 }
 
 function insertSaved(body){
