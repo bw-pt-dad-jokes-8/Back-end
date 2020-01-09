@@ -10,7 +10,7 @@ router.post('/register', (req,res)=> {
     body.password = hash;
     const token = db.genToken(body);
     db.insertUser(body).then(user =>  {
-        res.status(201).json({message: 'user created!', token})
+        res.status(201).json({message: 'user created!',info: user, token})
     })
     .catch(({message}) => res.status(500).json({error: message, message: 'internal server error'}))
 });
