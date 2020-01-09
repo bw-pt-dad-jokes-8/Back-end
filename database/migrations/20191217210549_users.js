@@ -15,9 +15,9 @@ exports.up = function(knex) {
   })
   .createTable('saved', saves => {
       saves.increments();
-      saves.integer('user_id').unsigned().notNullable().unique().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
-      saves.integer('posted_user_id').unsigned().notNullable().unique().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
-      saves.integer('joke_id').unsigned().notNullable().unique().references('id').inTable('jokes').onDelete('CASCADE').onUpdate('CASCADE');
+      saves.integer('user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+      saves.integer('posted_user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+      saves.integer('joke_id').unsigned().notNullable().references('id').inTable('jokes').onDelete('CASCADE').onUpdate('CASCADE');
   })
 };
 

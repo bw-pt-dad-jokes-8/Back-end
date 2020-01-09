@@ -35,11 +35,15 @@ function getJokes(){
 }
 
 function getJokeById(id){
-    return db('jokes').where({id}).first();
+    console.log(id)
+    db('jokes').where('id', id).first();
 }
 
 function getSaved(id){
-    return db('saved').where('user_id', id);
+    const saved = db('saved').where('user_id', id)
+    return  saved.map(jokes=>{
+        return db('jokes').where('id', jokes.joke_id).first();
+    })
 }
 
 function insertSaved(body){
