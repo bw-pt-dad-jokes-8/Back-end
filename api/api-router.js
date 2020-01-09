@@ -66,7 +66,7 @@ router.delete('/restricted/jokes/:id', restricted, (req,res) => {
     const id = req.params.id;
     db.remove(id).then( del => {
         res.status(200).json({message: 'joke has been deleted', del})
-    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
+    }).catch(err=> res.status(500).json({err}))
 })
 
 router.put('/restricted/jokes/:id', restricted, (req,res) => {
