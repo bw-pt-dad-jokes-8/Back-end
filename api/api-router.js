@@ -31,7 +31,7 @@ router.post('/login', (req,res)=> {
 router.get('/jokes', (req, res) => {
     db.getJokes().then(jokes => {
         res.status(200).json({jokes});
-    })
+    }).catch(err =>res.status(500).json({error: err, message: 'internal server error'}))
 })
 
 router.post('/restricted/jokes', restricted, (req,res) => {
@@ -59,7 +59,7 @@ router.get('/restricted/saved/:id', restricted, (req, res) => {
     const id = req.params.id;
     db.getSaved(id).then(saves => {
         res.status(200).json(saves);
-    }).catch(err=> res.status(500).json({error: err, message: 'internal server error'}))
+    }).catch(err=> res.status(500).json({error: err}))
 })
 
 router.delete('/restricted/jokes/:id', restricted, (req,res) => {
