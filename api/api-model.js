@@ -55,7 +55,11 @@ function insertJoke(body){
 }
 
 function insertUser(body){
-    return db('users').insert(body)
+    return db('users').insert(body).then(id =>{
+        console.log(id[0])
+        const userId = id[0]; 
+        return db('users').where("username", body.username).first();
+    })
 }
 
 function remove(id){
